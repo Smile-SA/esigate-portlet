@@ -1,9 +1,12 @@
 # Historique
-ESI-Gate a été créé pour palier aux limites des iframes et répondre simplement au besoin d'intégration graphique avec couplage faible.
+ESI-Gate a été créé pour palier aux limites des iframes et répondre simplement au besoin d'intégration avec couplage faible.
 Liferay bénéficierai grandement d'un portlet générique ESI-Gate pour agréger dans le portail une application métier tiers.
 
 L'autre avantage est de permettre le développement des parties métiers sans devoir faire de dev Liferay
 
+
+http://blog.smile.fr/Integrer-metier-et-liferay-avec-esi-gate-partie-1-2
+http://blog.smile.fr/Integrer-metier-et-liferay-avec-esi-gate-partie-2-2
 
 # Portlet Esigate
 
