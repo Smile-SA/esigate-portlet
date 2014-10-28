@@ -14,13 +14,14 @@ Poser la portlet sur une page et aller dans la vue edit de la portlet pour la pa
 
 
 # Compilation de la portlet
-
-    Installer les artifacts maven fournit par liferay :
-        Récupérer l'archive maven sur http://sourceforge.net/projects/lportal/files/Liferay%20Portal/
+Installer les artifacts maven fournit par liferay :
+- Récupérer l'archive maven sur http://sourceforge.net/projects/lportal/files/Liferay%20Portal/
     (Fichier liferay-portal-maven-xxx.zip)
-        ant install
+- Extraire l'archive       
+- Executer la commande	"ant install"
 
-    Packager la portlet avec "mvn package"
+Dans le projet esigate-portlet, packager la portlet  avec :
+	mvn package
 
 
 
