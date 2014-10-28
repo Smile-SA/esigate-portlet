@@ -6,6 +6,7 @@ L'autre avantage est de permettre le développement des parties métiers sans de
 
 
 http://blog.smile.fr/Integrer-metier-et-liferay-avec-esi-gate-partie-1-2
+
 http://blog.smile.fr/Integrer-metier-et-liferay-avec-esi-gate-partie-2-2
 
 # Portlet Esigate
