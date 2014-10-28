@@ -25,6 +25,7 @@ La portlet est généré dans target/esigate-portlet.war
 # Paramétrage
 
 Configurer les providers esigate dans le fichier liferay/tomcat/lib/ext/esigate.properties :
+
 	provider1.remoteUrlBase=http://localhost:4567/
 	provider1.mappings=/*
 	provider1.preserveHost=false
