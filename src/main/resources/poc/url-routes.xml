@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 6.2.0//EN"
+        "http://www.liferay.com/dtd/liferay-friendly-url-routes_6_2_0.dtd">
+<routes>
+<!--
+    <route>
+        <pattern>/{instanceId}/s/{p_p_state}/mode/{p_p_mode}/c/{p_p_cacheability}</pattern>
+        <implicit-parameter name="p_p_cacheability">cacheLevelPage</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/{instanceId}/l/{p_p_lifecycle}/s/{p_p_state}/m/{p_p_mode}/c/{p_p_cacheability}/p/{p_auth}</pattern>
+        <ignored-parameter name="p_p_col_count"/>
+        <implicit-parameter name="p_p_cacheability">cacheLevelPage</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">1</implicit-parameter>
+        <implicit-parameter name="action">doaction</implicit-parameter>
+    </route>
+    http://localhost:8080/web/guest/welcome/-/esigate/action/8UD50sypbGjq/l/1/s/normal/m/view/c/cacheLevelPage/p/toOLgpvQ
+-->
+
+
+    <route><!--http://localhost:8080/web/guest/welcome/-/esigate/resource/8OdqFvmtkXKS?p_p_resource_id=%2Fgoogle%2Fimg%3Ftest%3D1 -->
+        <pattern>/resource/{instanceId}</pattern>
+        <implicit-parameter name="p_p_cacheability">cacheLevelPage</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+    </route>
+    <route><!--http://localhost:8080/web/guest/welcome/-/esigate/action/8UD50sypbGjq/l/1/p/toOLgpvQ-->
+        <pattern>/action/{instanceId}/s/{p_p_state}/l/{p_p_lifecycle}/param/{remoteaction}</pattern>
+        <ignored-parameter name="p_p_col_count"/>
+        <!--<implicit-parameter name="remoteaction"/>-->
+        <!--
+        <implicit-parameter name="p_p_cacheability">cacheLevelPage</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">1</implicit-parameter>-->
+    </route>
+<!--
+    <route>
+        <pattern>/action/{instanceId}/l/{p_p_lifecycle}</pattern>
+        <ignored-parameter name="p_p_col_count"/>
+    </route>-->
+
+</routes>
