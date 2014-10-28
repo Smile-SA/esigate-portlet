@@ -30,13 +30,10 @@ Configurer les providers esigate dans le fichier liferay/tomcat/lib/ext/esigate.
 	provider1.mappings=/*
 	provider1.preserveHost=false
 
-	provider2.remoteUrlBase=http://localhost:8888/
-	provider2.mappings=/*
-	provider2.preserveHost=false
+	providerMyApp.remoteUrlBase=http://myhost/myapp
+	providerMyApp.mappings=/*
+	providerMyApp.preserveHost=false
 
-	provider3.remoteUrlBase=http://localhost:8888/
-	provider3.mappings=/*
-	provider3.preserveHost=false
 
 # Déploiement
 
