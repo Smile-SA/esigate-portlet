@@ -24,9 +24,9 @@ Installer les artifacts maven fournit par liferay :
 - Extraire l'archive       
 - Executer la commande	"ant install"
 
-Dans le projet esigate-portlet, packager la portlet  avec :
+Dans le projet esigate-portlet, lancer la commande suivante pour créer la portlet war :
 	mvn package
-
+La portlet est généré dans target/esigate-portlet.war
 
 
 # Installation
@@ -44,7 +44,7 @@ Configurer les providers esigate dans le fichier liferay/tomcat/lib/ext/esigate.
 	provider3.mappings=/*
 	provider3.preserveHost=false
 
-Déployer la portlet dans liferay
+Déployer la portlet esigate-portlet dans liferay 
 
 
 Ajouter la portlet esigate-portlet dans une page et aller dans les préférences
@@ -61,8 +61,10 @@ La portlet effectue une réecriture des url de la page fournit par le provider. 
 
 Les URL construires par des fonctions javascript ne seront pas réécrites (ajax). Par contre, cela doit fonctionner si les URLs ajax sont définis dans la page html (a href ou form selon le besoin)
 
+La porlet utilise le mécanisme de friendly URL pour la réécriture d'URL
 
 L'authentification n'est pas géré dans le POC. Le mécanisme d'authentification standard d'Esigate peut-être utilisé (CAS par exemple).
+
 
 
 
