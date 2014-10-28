@@ -51,9 +51,11 @@ La portlet effectue une réécriture d'url du contenu fournit par le provider :
 - les URL resources statics sont réécrites pour pointer sur la phase serveResource de la portlet,
 - les actions des formulaires sont réécrites pour pointer sur la phase processAction de la portlet
 
+Le mécanisme de friendly URL liferay est utilisé pour la réécriture d'URL
+
 Les URL construires par des fonctions javascript ne seront pas réécrites (ajax). Par contre, cela doit fonctionner si les URLs ajax sont définis dans la page html (a href ou form selon le besoin)
 
-La porlet utilise le mécanisme de friendly URL pour la réécriture d'URL
+
 
 L'authentification n'est pas géré dans le POC. Le mécanisme d'authentification standard d'Esigate peut-être utilisé (CAS par exemple).
 
