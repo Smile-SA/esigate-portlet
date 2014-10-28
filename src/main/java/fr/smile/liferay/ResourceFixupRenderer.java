@@ -15,13 +15,13 @@
 
 package fr.smile.liferay;
 
-import static org.apache.commons.lang3.StringUtils.stripEnd;
-
 import java.io.IOException;
 import java.io.Writer;
 
 import org.esigate.Renderer;
 import org.esigate.impl.DriverRequest;
+
+import static org.apache.commons.lang3.StringUtils.stripEnd;
 
 /**
  * This renderer "fixes" links to resources, images and pages in pages retrieved by esigate :
@@ -30,13 +30,12 @@ import org.esigate.impl.DriverRequest;
  * /myapp/curentpath/img/test.img)</li>
  * <li>All relative urls can be converted to absolute urls (including server name)</li>
  * </ul>
- * 
+ * <p/>
  * This enables use of esigate without any special modifications of the generated urls on the provider side.
- * 
+ * <p/>
  * All href and src attributes are processed, except javascript links.
- * 
+ *
  * @author Nicolas Richeton
- * 
  */
 public class ResourceFixupRenderer implements Renderer {
     private final String baseUrl;
@@ -46,24 +45,21 @@ public class ResourceFixupRenderer implements Renderer {
     /**
      * Creates a renderer which fixes urls. The domain name and the url path are computed from the full url made of
      * baseUrl + pageFullPath.
-     * 
+     * <p/>
      * If mode is ABSOLUTE, all relative urls will be replaced by the full urls :
      * <ul>
      * <li>images/image.png is replaced by http://server/context/images/image.png</li>
      * <li>/context/images/image.png is replaced by http://server/context/images/image.png</li>
      * </ul>
-     * 
+     * <p/>
      * If mode is RELATIVE, context will be added to relative urls :
      * <ul>
      * <li>images/image.png is replaced by /context/images/image.png</li>
      * </ul>
-     * 
-     * @param baseUrl
-     *            Base url (same as configured in provider).
-     * @param requestUrl
-     *            Page as used in tag lib or using API
-     * @param urlRewriter
-     *            The url rewriter for this provider
+     *
+     * @param baseUrl     Base url (same as configured in provider).
+     * @param requestUrl  Page as used in tag lib or using API
+     * @param urlRewriter The url rewriter for this provider
      */
     public ResourceFixupRenderer(String baseUrl, String requestUrl, LiferayUrlRewriter urlRewriter) {
         this.baseUrl = stripEnd(baseUrl, "/");

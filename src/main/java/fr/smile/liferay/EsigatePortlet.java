@@ -1,5 +1,3 @@
-package fr.smile.liferay;
-
 /*
  * Copyright 2001-2005 The Apache Software Foundation.
  *
@@ -15,6 +13,8 @@ package fr.smile.liferay;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package fr.smile.liferay;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -76,7 +76,6 @@ import com.liferay.portal.util.PortalUtil;
 
 /**
  * Esigate portlet that demonstrate the integration of remote application in a Portlet.
- *
  */
 public class EsigatePortlet extends GenericPortlet {
 
@@ -93,14 +92,11 @@ public class EsigatePortlet extends GenericPortlet {
 
     private static final String PREF_BLOCK = "block";
     private static final String PREF_PROVIDER = "provider";
+    private static final String URL_INSTANCE_ID = "__instanceID__";
+    private static Log LOG = LogFactoryUtil.getLog(EsigatePortlet.class);
     private PortletRequestDispatcher normalView;
     private PortletRequestDispatcher helpView;
     private PortletRequestDispatcher editView;
-
-
-    private static final String URL_INSTANCE_ID = "__instanceID__";
-
-    private static Log LOG = LogFactoryUtil.getLog(EsigatePortlet.class);
 
     @Override
     public void processAction(ActionRequest request, ActionResponse response) throws PortletException, IOException {
@@ -359,6 +355,7 @@ public class EsigatePortlet extends GenericPortlet {
 
     /**
      * DoHelp
+     *
      * @param request
      * @param response
      * @throws PortletException
@@ -371,6 +368,7 @@ public class EsigatePortlet extends GenericPortlet {
 
     /**
      * Init esigate and portlet
+     *
      * @param config
      * @throws PortletException
      */
@@ -425,8 +423,8 @@ public class EsigatePortlet extends GenericPortlet {
                 uri.append(query);
             }
         }
-        if(LOG.isDebugEnabled()){
-            LOG.debug("Creating Incoming request with method "+ method+ ", URI "+ uri + ", protocoleVersion " + protocolVersion);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Creating Incoming request with method " + method + ", URI " + uri + ", protocoleVersion " + protocolVersion);
         }
         IncomingRequest.Builder builder = IncomingRequest.builder(new BasicRequestLine(method, uri.toString(), protocolVersion));
 
@@ -463,7 +461,7 @@ public class EsigatePortlet extends GenericPortlet {
         javax.servlet.http.Cookie[] src = request.getCookies();
 
         if (src != null) {
-            LOG.debug("Copying " + src.length  + " cookie(s) to response.");
+            LOG.debug("Copying " + src.length + " cookie(s) to response.");
             for (int i = 0; i < src.length; i++) {
                 javax.servlet.http.Cookie c = src[i];
                 BasicClientCookie dest = new BasicClientCookie(c.getName(), c.getValue());

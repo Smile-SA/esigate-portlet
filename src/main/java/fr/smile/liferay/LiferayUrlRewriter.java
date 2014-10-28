@@ -15,16 +15,17 @@
 
 package fr.smile.liferay;
 
-import com.liferay.portal.kernel.util.Base64;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.esigate.Parameters;
 import org.esigate.impl.UrlRewriter;
 import org.esigate.util.UriUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.liferay.portal.kernel.util.Base64;
 
 import static org.apache.commons.lang3.StringUtils.stripEnd;
 import static org.apache.commons.lang3.StringUtils.stripStart;
@@ -44,12 +45,9 @@ import static org.apache.commons.lang3.StringUtils.stripStart;
  * @author Nicolas Richeton
  */
 public final class LiferayUrlRewriter {
-    private static final Logger LOG = LoggerFactory.getLogger(UrlRewriter.class);
-
     public static final int ABSOLUTE = 0;
     public static final int RELATIVE = 1;
-
-
+    private static final Logger LOG = LoggerFactory.getLogger(UrlRewriter.class);
     private static final Pattern URL_PATTERN_RESOURCES = Pattern.compile(
             "<([^\\!][^>]+)(src|background)\\s*=\\s*('[^<']*'|\"[^<\"]*\")([^>]*)>",
             Pattern.CASE_INSENSITIVE);
@@ -121,7 +119,7 @@ public final class LiferayUrlRewriter {
         if (visibleBaseUrl == null) {
             visibleBaseUrl = cleanBaseUrl;
         }
-        String visibleBaseUrlPath =visibleBaseUrl;
+        String visibleBaseUrlPath = visibleBaseUrl;
         String pagePath = concatUrl(visibleBaseUrlPath, requestUrl);
         if (pagePath != null) {
             int indexSlash = pagePath.lastIndexOf('/');
@@ -156,7 +154,7 @@ public final class LiferayUrlRewriter {
                 if (result.startsWith(baseUrlPath)) {
                     result = result.substring(baseUrlPath.length());
                     result = Base64.encode(result.getBytes());
-                    result = visibleBaseUrlPath +  result;
+                    result = visibleBaseUrlPath + result;
                 }
             }
 
