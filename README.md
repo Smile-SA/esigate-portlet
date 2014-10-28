@@ -9,13 +9,6 @@ http://blog.smile.fr/Integrer-metier-et-liferay-avec-esi-gate-partie-1-2
 
 http://blog.smile.fr/Integrer-metier-et-liferay-avec-esi-gate-partie-2-2
 
-# Portlet Esigate
-
-Deployer la portlet dans liferay
-
-Poser la portlet sur une page et aller dans la vue edit de la portlet pour la paramétrer 
-
-
 
 # Compilation de la portlet
 Installer les artifacts maven fournit par liferay :
@@ -29,7 +22,7 @@ Dans le projet esigate-portlet, lancer la commande suivante pour créer la portl
 La portlet est généré dans target/esigate-portlet.war
 
 
-# Installation
+# Paramétrage
 
 Configurer les providers esigate dans le fichier liferay/tomcat/lib/ext/esigate.properties :
 	provider1.remoteUrlBase=http://localhost:4567/
@@ -44,10 +37,11 @@ Configurer les providers esigate dans le fichier liferay/tomcat/lib/ext/esigate.
 	provider3.mappings=/*
 	provider3.preserveHost=false
 
+# Déploiement
+
 Déployer la portlet esigate-portlet dans liferay 
 
-
-Ajouter la portlet esigate-portlet dans une page et aller dans les préférences
+Poser la portlet sur une page et aller dans la vue edit de la portlet pour la paramétrer 
 
 
 # Fonctionnement/Limitations
