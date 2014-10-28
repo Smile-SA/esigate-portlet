@@ -47,8 +47,8 @@ La portlet utilise l'API esigate (proxy) pour intégrer le contenu d'application
 
 Cette portlet permet d'intégrer un block par provider, si le block n'est pas définit, l'ensemble de la page provider sera intégré.
 
-La portlet effectue une réecriture des url de la page fournit par le provider. La portlet effectue une réécriture d'url du contenu fournit par le provider :
--  les URL resources statics sont réécrites pour pointer sur la phase serveResource de la portlet,
+La portlet effectue une réécriture d'url du contenu fournit par le provider :
+- les URL resources statics sont réécrites pour pointer sur la phase serveResource de la portlet,
 - les actions des formulaires sont réécrites pour pointer sur la phase processAction de la portlet
 
 Les URL construires par des fonctions javascript ne seront pas réécrites (ajax). Par contre, cela doit fonctionner si les URLs ajax sont définis dans la page html (a href ou form selon le besoin)
