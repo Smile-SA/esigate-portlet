@@ -120,6 +120,7 @@ public class EsigatePortlet extends GenericPortlet {
             request.getPreferences().setValue(PREF_PROVIDER, provider);
             request.getPreferences().setValue(PREF_BLOCK, block);
             request.getPreferences().store();
+            response.setRenderParameter("result","OK");
 
         } else {
             String targetUrl = request.getParameter(ACTION_PARAMETER);
