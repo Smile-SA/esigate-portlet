@@ -20,11 +20,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.esigate.Parameters;
-import org.esigate.impl.UrlRewriter;
 import org.esigate.util.UriUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
 
 import static org.apache.commons.lang3.StringUtils.stripEnd;
@@ -47,7 +46,7 @@ import static org.apache.commons.lang3.StringUtils.stripStart;
 public final class LiferayUrlRewriter {
     public static final int ABSOLUTE = 0;
     public static final int RELATIVE = 1;
-    private static final Logger LOG = LoggerFactory.getLogger(UrlRewriter.class);
+    private static Log LOG = LogFactoryUtil.getLog(EsigatePortlet.class);
     private static final Pattern URL_PATTERN_RESOURCES = Pattern.compile(
             "<([^\\!][^>]+)(src|background)\\s*=\\s*('[^<']*'|\"[^<\"]*\")([^>]*)>",
             Pattern.CASE_INSENSITIVE);
@@ -103,7 +102,9 @@ public final class LiferayUrlRewriter {
      */
     public String rewriteUrl(String url, String requestUrl, String baseUrl, String strVisibleBaseUrl) {
         if (url.isEmpty()) {
-            LOG.debug("skip empty url");
+            if(LOG.isDebugEnabled()) {
+                LOG.debug("skip empty url");
+            }
             return url;
         }
 
@@ -131,14 +132,16 @@ public final class LiferayUrlRewriter {
         String result = url;
         if (visibleBaseUrl != null && result.startsWith(cleanBaseUrl)) {
             result = visibleBaseUrl + result.substring(cleanBaseUrl.length());
-            LOG.debug("fix absolute url: {} -> {} ", url, result);
+            if(LOG.isDebugEnabled()) {
+                LOG.debug("fix absolute url: " + url + "->" + result);
+            }
             return result;
         }
 
         // Keep absolute, protocol-absolute and javascript urls untouched.
         if (result.startsWith("http://") || result.startsWith("https://") || result.startsWith("//")
                 || result.startsWith("#") || result.startsWith("javascript:")) {
-            LOG.debug("keeping absolute url: {}", result);
+            LOG.debug("keeping absolute url:"+ result);
             return result;
         }
 
@@ -170,7 +173,9 @@ public final class LiferayUrlRewriter {
 
         }
 
-        LOG.debug("url fixed: {} -> {}", url, result);
+        if(LOG.isDebugEnabled()) {
+            LOG.debug("url fixed: " + url + "->" + result);
+        }
         return result;
     }
 
@@ -196,7 +201,9 @@ public final class LiferayUrlRewriter {
         StringBuffer result = new StringBuffer(input.length());
         Matcher m = pattern.matcher(input);
         while (m.find()) {
-            LOG.trace("found match: {}", m);
+            if(LOG.isTraceEnabled()) {
+                LOG.trace("found match: " + m);
+            }
             String url = input.subSequence(m.start(3) + 1, m.end(3) - 1).toString();
             url = rewriteUrl(url, requestUrl, baseUrlParam, visibleBaseUrl);
             url = url.replaceAll("\\$", "\\\\\\$"); // replace '$' -> '\$' as it
@@ -206,7 +213,9 @@ public final class LiferayUrlRewriter {
                 tagReplacement.append("$4");
             }
             tagReplacement.append('>');
-            LOG.trace("replacement: {}", tagReplacement);
+            if(LOG.isTraceEnabled()) {
+                LOG.trace("replacement: " + tagReplacement);
+            }
             m.appendReplacement(result, tagReplacement.toString());
         }
         m.appendTail(result);
