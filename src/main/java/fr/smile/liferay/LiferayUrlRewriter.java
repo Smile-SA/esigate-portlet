@@ -15,12 +15,8 @@
 
 package fr.smile.liferay;
 
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.esigate.Parameters;
-import org.esigate.util.UriUtils;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -44,21 +40,17 @@ import static org.apache.commons.lang3.StringUtils.stripStart;
  * @author Nicolas Richeton
  */
 public final class LiferayUrlRewriter {
-    public static final int ABSOLUTE = 0;
-    public static final int RELATIVE = 1;
-    private static Log LOG = LogFactoryUtil.getLog(EsigatePortlet.class);
+
     private static final Pattern URL_PATTERN_RESOURCES = Pattern.compile(
             "<([^\\!][^>]+)(src|background)\\s*=\\s*('[^<']*'|\"[^<\"]*\")([^>]*)>",
             Pattern.CASE_INSENSITIVE);
-
     private static final Pattern URL_PATTERN_ACTION = Pattern.compile(
             "<([^\\!][^>]+)(href|action)\\s*=\\s*('[^<']*'|\"[^<\"]*\")([^>]*)>",
             Pattern.CASE_INSENSITIVE);
-
+    private static Log LOG = LogFactoryUtil.getLog(EsigatePortlet.class);
     private String visibleBaseUrlResource;
     private String visibleBaseUrlAction;
 
-    private int mode;
 
     /**
      * Creates a renderer which fixes urls. The domain name and the url path are computed from the full url made of
@@ -74,21 +66,15 @@ public final class LiferayUrlRewriter {
      * <ul>
      * <li>images/image.png is replaced by /context/images/image.png</li>
      * </ul>
-     *
-     * @param properties Configuration properties
      */
-    public LiferayUrlRewriter(Properties properties, String strVisibleBaseUrlAction, String strVisibleBaseUrlResource) {
-        if ("absolute".equalsIgnoreCase(Parameters.FIX_MODE.getValue(properties))) {
-            mode = ABSOLUTE;
-        } else {
-            mode = RELATIVE;
-        }
+    public LiferayUrlRewriter(String strVisibleBaseUrlAction, String strVisibleBaseUrlResource) {
+
         this.visibleBaseUrlResource = stripEnd(strVisibleBaseUrlResource, "/");
         this.visibleBaseUrlAction = strVisibleBaseUrlAction;
 
     }
 
-    private String concatUrl(String begin, String end) {
+    private static String concatUrl(String begin, String end) {
         return stripEnd(begin, "/") + "/" + stripStart(end, "/");
     }
 
@@ -100,12 +86,12 @@ public final class LiferayUrlRewriter {
      * @param baseUrl    The base URL selected for this request.
      * @return the fixed url.
      */
-    public String rewriteUrl(String url, String requestUrl, String baseUrl, String strVisibleBaseUrl) {
-        if(LOG.isDebugEnabled()) {
-            LOG.debug("rewriteUrl (url=" + url + ",requestUrl=" + requestUrl + ", baseUrl=" + baseUrl + ",strVisibleBaseUrl=" + strVisibleBaseUrl + ")");
+    public String rewriteUrl(String url, String requestUrl, String baseUrl, String portalBaseUrl) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("rewriteUrl (url=" + url + ",requestUrl=" + requestUrl + ", baseUrl=" + baseUrl + ",portalBaseUrl=" + portalBaseUrl + ")");
         }
         if (url.isEmpty()) {
-            if(LOG.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("skip empty url");
             }
             return url;
@@ -119,64 +105,42 @@ public final class LiferayUrlRewriter {
 
         // Build clean URI for further processing
         String cleanBaseUrl = stripEnd(baseUrl, "/");
-        String visibleBaseUrl = strVisibleBaseUrl;
-        if (visibleBaseUrl == null) {
-            visibleBaseUrl = cleanBaseUrl;
-        }
-        String visibleBaseUrlPath = visibleBaseUrl;
-        String pagePath = concatUrl(visibleBaseUrlPath, requestUrl);
-        if (pagePath != null) {
-            int indexSlash = pagePath.lastIndexOf('/');
-            if (indexSlash >= 0) {
-                pagePath = pagePath.substring(0, indexSlash);
-            }
-        }
+
 
         String result = url;
-        if (visibleBaseUrl != null && result.startsWith(cleanBaseUrl)) {
-            result = visibleBaseUrl + result.substring(cleanBaseUrl.length());
-            if(LOG.isDebugEnabled()) {
-                LOG.debug("fix absolute url: " + url + "->" + result);
-            }
-            return result;
+        if (result.startsWith(cleanBaseUrl)) {
+            result = result.substring(cleanBaseUrl.length());
         }
 
         // Keep absolute, protocol-absolute and javascript urls untouched.
         if (result.startsWith("http://") || result.startsWith("https://") || result.startsWith("//")
                 || result.startsWith("#") || result.startsWith("javascript:")) {
-            LOG.debug("keeping absolute url:"+ result);
+            LOG.debug("keeping absolute url:" + result);
             return result;
         }
-
-        //HttpHost httpHost = UriUtils.extractHost(visibleBaseUrl);
-        //String server = httpHost.toURI();
 
         // Add domain to context absolute urls
         if (result.startsWith("/")) {
 
             // Check if we are going to replace context
-            if (cleanBaseUrl != null && !cleanBaseUrl.equals(visibleBaseUrl)) {
-                String baseUrlPath = UriUtils.getPath(cleanBaseUrl);
-                if (result.startsWith(baseUrlPath)) {
-                    result = result.substring(baseUrlPath.length());
-                    result = Base64.encode(result.getBytes());
-                    result = visibleBaseUrlPath + result;
-                }
-            }
+
+                result = Base64.encode(result.getBytes());
+
+
 
         } else {
 
             if (result.charAt(0) == '?' && fileName != null) {
                 result = fileName + result;
             }
-
             // Process relative urls
-
-            result = pagePath + "/" + result;
+            result = baseUrl + "/" + result;
 
         }
 
-        if(LOG.isDebugEnabled()) {
+        result = portalBaseUrl + result;
+
+        if (LOG.isDebugEnabled()) {
             LOG.debug("url fixed: " + url + "->" + result);
         }
         return result;
@@ -201,15 +165,15 @@ public final class LiferayUrlRewriter {
      * @return the result of this renderer.
      */
     public CharSequence rewriteHtml(CharSequence input, String requestUrl, Pattern pattern, String baseUrlParam, String visibleBaseUrl) {
-        if(LOG.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("input=" + input);
-            LOG.debug("rewriteHtml (requestUrl=" + requestUrl + ", pattern=" + pattern + ",baseUrlParam)"+ baseUrlParam +",strVisibleBaseUrl=" + visibleBaseUrl + ")");
+            LOG.debug("rewriteHtml (requestUrl=" + requestUrl + ", pattern=" + pattern + ",baseUrlParam)" + baseUrlParam + ",strVisibleBaseUrl=" + visibleBaseUrl + ")");
         }
 
         StringBuffer result = new StringBuffer(input.length());
         Matcher m = pattern.matcher(input);
         while (m.find()) {
-            if(LOG.isTraceEnabled()) {
+            if (LOG.isTraceEnabled()) {
                 LOG.trace("found match: " + m);
             }
             String url = input.subSequence(m.start(3) + 1, m.end(3) - 1).toString();
@@ -221,7 +185,7 @@ public final class LiferayUrlRewriter {
                 tagReplacement.append("$4");
             }
             tagReplacement.append('>');
-            if(LOG.isTraceEnabled()) {
+            if (LOG.isTraceEnabled()) {
                 LOG.trace("replacement: " + tagReplacement);
             }
             m.appendReplacement(result, tagReplacement.toString());

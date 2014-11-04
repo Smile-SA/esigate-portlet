@@ -300,7 +300,7 @@ public class EsigatePortlet extends GenericPortlet {
         IncomingRequest incomingRequest = this.create(request, method);
         Driver driver = DriverFactory.getInstance(provider);
         String[] baseUrl = Parameters.REMOTE_URL_BASE.getValue(driver.getConfiguration().getProperties());
-        LiferayUrlRewriter rewriter = new LiferayUrlRewriter(driver.getConfiguration().getProperties(), baseActionURL, baseResourceURL);
+        LiferayUrlRewriter rewriter = new LiferayUrlRewriter(baseActionURL, baseResourceURL);
         ResourceFixupRenderer renderer = new ResourceFixupRenderer(baseUrl[0], targetUrl, rewriter);
         BlockRenderer r = new BlockRenderer(block, null);
         try {
