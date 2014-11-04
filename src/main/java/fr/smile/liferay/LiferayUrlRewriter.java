@@ -101,6 +101,9 @@ public final class LiferayUrlRewriter {
      * @return the fixed url.
      */
     public String rewriteUrl(String url, String requestUrl, String baseUrl, String strVisibleBaseUrl) {
+        if(LOG.isDebugEnabled()) {
+            LOG.debug("rewriteUrl (url=" + url + ",requestUrl=" + requestUrl + ", baseUrl=" + baseUrl + ",strVisibleBaseUrl=" + strVisibleBaseUrl + ")");
+        }
         if (url.isEmpty()) {
             if(LOG.isDebugEnabled()) {
                 LOG.debug("skip empty url");
@@ -198,6 +201,11 @@ public final class LiferayUrlRewriter {
      * @return the result of this renderer.
      */
     public CharSequence rewriteHtml(CharSequence input, String requestUrl, Pattern pattern, String baseUrlParam, String visibleBaseUrl) {
+        if(LOG.isDebugEnabled()) {
+            LOG.debug("input=" + input);
+            LOG.debug("rewriteHtml (requestUrl=" + requestUrl + ", pattern=" + pattern + ",baseUrlParam)"+ baseUrlParam +",strVisibleBaseUrl=" + visibleBaseUrl + ")");
+        }
+
         StringBuffer result = new StringBuffer(input.length());
         Matcher m = pattern.matcher(input);
         while (m.find()) {
