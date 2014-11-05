@@ -38,7 +38,7 @@ public class LiferayUrlRewriterTest {
 
         String url = "/smartcloudportal/plugins/jquery-1.4.4.1/js/jquery/jquery-1.4.4.js";
         String requestUrl = "/";
-        String baseUrl = "http://5.39.26.188:8080/smartcloudportal/login/auth";
+        String baseUrl = "http://host:8080/smartcloudportal/login/auth";
         String strVisibleBaseUrl = "http://localhost:8080/web/guest/welcome/-/esigate/resource/5hrUXR0KUtEa?p_p_resource_id=";
 
 
