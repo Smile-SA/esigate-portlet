@@ -49,6 +49,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
+import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -152,7 +153,7 @@ public class EsigatePortlet extends GenericPortlet {
         resourceID = new String(valueDecoded);
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("serveResource [" + resourceID + "]");
+                LOG.debug("serveResource [" + resourceID + "]");
         }
 
 
@@ -304,7 +305,26 @@ public class EsigatePortlet extends GenericPortlet {
         ResourceFixupRenderer renderer = new ResourceFixupRenderer(baseUrl[0], targetUrl, rewriter);
         BlockRenderer r = new BlockRenderer(block, null);
         try {
+            if(LOG.isDebugEnabled()){
+                LOG.debug("Proxy to driver " + driver.getConfiguration().getInstanceName());
+            }
             CloseableHttpResponse driverResponse = driver.proxy(targetUrl, incomingRequest, renderer, r);
+            if(LOG.isDebugEnabled()){
+                LOG.debug("HTTP status code is " + driverResponse.getStatusLine().getStatusCode());
+            }
+            if(driverResponse.getStatusLine().getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY ||
+                    driverResponse.getStatusLine().getStatusCode() == HttpStatus.SC_MOVED_PERMANENTLY ||
+                driverResponse.getStatusLine().getStatusCode() == HttpStatus.SC_TEMPORARY_REDIRECT){
+
+                String redirecturl = driverResponse.getFirstHeader("Location").getValue();
+                LOG.debug("Redirect to " + redirecturl);
+                if(redirecturl.contains("http://localhost:8080/")){
+                    redirecturl = redirecturl.replace("http://localhost:8080/", "");
+                    LOG.debug("Rendering " + redirecturl);
+                    driverResponse = driver.render(redirecturl, incomingRequest, renderer, r);
+                }
+
+            }
             HttpEntity httpEntity = driverResponse.getEntity();
             if (httpEntity == null) {
                 throw new RuntimeException("" + driverResponse.getStatusLine().getStatusCode() + "  " + driverResponse.getStatusLine().getReasonPhrase());
