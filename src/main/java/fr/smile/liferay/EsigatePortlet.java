@@ -81,6 +81,7 @@ import com.liferay.portal.util.PortalUtil;
 public class EsigatePortlet extends GenericPortlet {
 
 
+    private static final String HTTP_BASE_INCOMING_URL = "http://localhost:8080/";
     private static final String URL_PARAMETER = "url";
     private static final String CONTENT_PARAMETER = "content";
     private static final String ACTION_PARAMETER = "remoteaction";
@@ -318,8 +319,8 @@ public class EsigatePortlet extends GenericPortlet {
 
                 String redirecturl = driverResponse.getFirstHeader("Location").getValue();
                 LOG.debug("Redirect to " + redirecturl);
-                if(redirecturl.contains("http://localhost:8080/")){
-                    redirecturl = redirecturl.replace("http://localhost:8080/", "");
+                if(redirecturl.contains(HTTP_BASE_INCOMING_URL)){
+                    redirecturl = redirecturl.replace(HTTP_BASE_INCOMING_URL, "");
                     LOG.debug("Rendering " + redirecturl);
                     driverResponse = driver.render(redirecturl, incomingRequest, renderer, r);
                 }
@@ -415,7 +416,7 @@ public class EsigatePortlet extends GenericPortlet {
 
         HttpServletRequest httpServletRequest = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
 
-        StringBuilder uri = new StringBuilder("http://localhost:8080/");
+        StringBuilder uri = new StringBuilder(HTTP_BASE_INCOMING_URL);
 
         StringBuilder query = new StringBuilder();
         Enumeration<String> parameters = request.getParameterNames();
